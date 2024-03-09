@@ -25,16 +25,18 @@ black_pawn = pygame.image.load("black_pieces/chess_pawn_black.png")
 #blank_png = pygame.image.load("blank.png")
 # piece convention: 0 = nil, 1,2 = pawn, 3,4 = knight, 5,6 = bishop, 7,8 = rook, 9,10 = queen, 11,12 = king, white is even, black odd
 chess_board = [
-    [8, 4, 6, 10, 12, 6, 4, 8],
-    [2, 2, 2, 2, 2, 2, 2, 2],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1],
+  
     [7, 3, 5, 9, 11, 5, 3, 7],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [2, 2, 2, 2, 2, 2, 2, 2],
+    [8, 4, 6, 10, 12, 6, 4, 8]
     ]
-num_to_surf = {0: None, 2: white_pawn, 1: black_pawn, 4: white_knight, 3: black_knight, 6: white_bishop, 5: black_bishop, 8: white_rook, 7: black_rook, 10: white_queen, 9: black_queen, 12: white_king, 11: black_king}
+num_to_surf = {0: None, 1: white_pawn, 2: black_pawn, 3: white_knight, 4: black_knight, 5: white_bishop, 6: black_bishop, 7: white_rook, 8: black_rook, 9: white_queen, 10: black_queen, 11: white_king, 12: black_king}
+mirror_fix = {0: 7, 1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6:1, 7: 0}
 t_space = 87
 y_offset = 405
 x_offset = -208
@@ -57,10 +59,10 @@ while running:
 
     if pygame.mouse.get_pressed()[0] and not mouse_was_pressed:
         if click1_cord == (None, None):
-            click1_cord = (mouse_row, mouse_column)
+            click1_cord = (mirror_fix[mouse_row], mouse_column)
             print(chess_board[click1_cord[0]][click1_cord[1]])
         else:
-            click2_cord = (mouse_row, mouse_column)
+            click2_cord = (mirror_fix[mouse_row], mouse_column)
             print(chess_board[click2_cord[0]][click2_cord[1]])
             chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
             chess_board[click1_cord[0]][click1_cord[1]] = 0
