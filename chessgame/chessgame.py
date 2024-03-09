@@ -20,7 +20,21 @@ black_rook = pygame.image.load("black_pieces/chess_rook_black.png")
 black_bishop = pygame.image.load("black_pieces/chess_bishop_black.png")
 black_knight = pygame.image.load("black_pieces/chess_knight_black.png")
 black_pawn = pygame.image.load("black_pieces/chess_pawn_black.png")
+# piece convention: 0 = nil, 1,2 = pawn, 3,4 = knight, 5,6 = bishop, 7,8 = rook, 9,10 = queen, 11,12 = king, white is odd, black even
+chess_board = [
+    [8, 4, 6, 10, 12, 6, 4, 8],
+    [2, 2, 2, 2, 2, 2, 2, 2],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [7, 3, 5, 9, 11, 5, 3, 7],
+    ]
 
+t_space = 87
+y_space = 405
+first_space = -208
 pygame.init()
 running = True
 
@@ -40,6 +54,15 @@ while running:
     
     screen.fill((0, 0, 0)) 
     screen.blit(board, (0, 0))
-    screen.blit(white_king, (140, 400))
-
+    screen.blit(white_king, (first_space + t_space * 4, y_space))
+    screen.blit(white_bishop, (first_space + t_space * 5, y_space))
+    screen.blit(white_knight, (first_space + t_space * 6, y_space))
+    screen.blit(white_rook, (first_space + t_space * 7, y_space))
+    screen.blit(white_queen, (first_space + t_space * 3, y_space))
+    screen.blit(white_bishop, (first_space + t_space * 2, y_space))
+    screen.blit(white_knight, (first_space + t_space * 1, y_space))
+    screen.blit(white_rook, (first_space, y_space))
+    for z in range(7):
+        for i in range(8):
+            screen.blit(white_pawn, (first_space + t_space * i, y_space - t_space * (z + 1)))
     pygame.display.flip()
