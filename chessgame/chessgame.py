@@ -20,11 +20,8 @@ black_rook = pygame.image.load("black_pieces/chess_rook_black.png")
 black_bishop = pygame.image.load("black_pieces/chess_bishop_black.png")
 black_knight = pygame.image.load("black_pieces/chess_knight_black.png")
 black_pawn = pygame.image.load("black_pieces/chess_pawn_black.png")
-#black_pawn = pygame.transform.scale(black_pawn, (600, 600))
-print(black_pawn.get_width())
-print(black_pawn.get_height())
 #current inefficiency 
-blank_png = pygame.image.load("blank.png")
+#blank_png = pygame.image.load("blank.png")
 # piece convention: 0 = nil, 1,2 = pawn, 3,4 = knight, 5,6 = bishop, 7,8 = rook, 9,10 = queen, 11,12 = king, white is even, black odd
 chess_board = [
     [8, 4, 6, 10, 12, 6, 4, 8],
@@ -36,7 +33,7 @@ chess_board = [
     [1, 1, 1, 1, 1, 1, 1, 1],
     [7, 3, 5, 9, 11, 5, 3, 7],
     ]
-num_to_surf = {0: blank_png, 2: white_pawn, 1: black_pawn, 4: white_knight, 3: black_knight, 6: white_bishop, 5: black_bishop, 8: white_rook, 7: black_rook, 10: white_queen, 9: black_queen, 12: white_king, 11: black_king}
+num_to_surf = {0: None, 2: white_pawn, 1: black_pawn, 4: white_knight, 3: black_knight, 6: white_bishop, 5: black_bishop, 8: white_rook, 7: black_rook, 10: white_queen, 9: black_queen, 12: white_king, 11: black_king}
 t_space = 87
 y_space = 405
 first_space = -208
@@ -69,6 +66,6 @@ while running:
     #screen.blit(white_rook, (first_space, y_space))
     for y in range(8):
         for x in range(8):
-            #screen.blit(white_pawn, (first_space + t_space * i, y_space - t_space * z))
-            screen.blit(num_to_surf[chess_board[y][x]], ((first_space + t_space * x, y_space - t_space * y)))
+            if not chess_board[y][x] == 0:
+                screen.blit(num_to_surf[chess_board[y][x]], ((first_space + t_space * x, y_space - t_space * y)))
     pygame.display.flip()
