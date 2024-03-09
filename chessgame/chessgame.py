@@ -8,8 +8,18 @@ board = pygame.image.load("chess_board.png")
 board = pygame.transform.scale(board, (700, 700))
 #white pieces:
 white_king = pygame.image.load("white_pieces/chess_king_white.png")
+white_queen = pygame.image.load("white_pieces/chess_queen_white.png")
+white_rook = pygame.image.load("white_pieces/chess_rook_white.png")
+white_bishop = pygame.image.load("white_pieces/chess_bishop_white.png")
+white_knight = pygame.image.load("white_pieces/chess_knight_white.png")
+white_pawn = pygame.image.load("white_pieces/chess_pawn_white.png")
 #black pieces
 black_king = pygame.image.load("black_pieces/chess_king_black.png")
+black_queen = pygame.image.load("black_pieces/chess_queen_black.png")
+black_rook = pygame.image.load("black_pieces/chess_rook_black.png")
+black_bishop = pygame.image.load("black_pieces/chess_bishop_black.png")
+black_knight = pygame.image.load("black_pieces/chess_knight_black.png")
+black_pawn = pygame.image.load("black_pieces/chess_pawn_black.png")
 
 pygame.init()
 running = True
