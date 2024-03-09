@@ -1,5 +1,6 @@
 
 import pygame
+from math import trunc
 
 screen = pygame.display.set_mode((700, 700))
 pygame.display.set_caption("Chess")
@@ -35,8 +36,13 @@ chess_board = [
     ]
 num_to_surf = {0: None, 2: white_pawn, 1: black_pawn, 4: white_knight, 3: black_knight, 6: white_bishop, 5: black_bishop, 8: white_rook, 7: black_rook, 10: white_queen, 9: black_queen, 12: white_king, 11: black_king}
 t_space = 87
-y_space = 405
-first_space = -208
+y_offset = 405
+x_offset = -208
+mouse_column = 0
+mouse_row = 0
+click1_cord = (None, None)
+click2_cord = (None, None)
+tempvar = None
 pygame.init()
 running = True
 
@@ -45,10 +51,22 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
-
+    mouse_column = trunc(mouse_pos_x / 88)
+    mouse_row = trunc(mouse_pos_y / 88)
+    
 
     if pygame.mouse.get_pressed()[0] and not mouse_was_pressed:
-        print("mouse pressed")
+        if click1_cord == (None, None):
+            click1_cord = (mouse_row, mouse_column)
+            print(chess_board[click1_cord[0]][click1_cord[1]])
+        else:
+            click2_cord = (mouse_row, mouse_column)
+            print(chess_board[click2_cord[0]][click2_cord[1]])
+            chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
+            chess_board[click1_cord[0]][click1_cord[1]] = 0
+            click1_cord = (None, None)
+            click2_cord = (None, None)
+
         mouse_was_pressed = True
     if not pygame.mouse.get_pressed()[0]:
         mouse_was_pressed = False
@@ -56,16 +74,9 @@ while running:
     
     screen.fill((0, 0, 0)) 
     screen.blit(board, (0, 0))
-    #screen.blit(white_king, (first_space + t_space * 4, y_space))
-    #screen.blit(white_bishop, (first_space + t_space * 5, y_space))
-    #screen.blit(white_knight, (first_space + t_space * 6, y_space))
-    #screen.blit(white_rook, (first_space + t_space * 7, y_space))
-    #screen.blit(white_queen, (first_space + t_space * 3, y_space))
-    #screen.blit(white_bishop, (first_space + t_space * 2, y_space))
-    #screen.blit(white_knight, (first_space + t_space * 1, y_space))
-    #screen.blit(white_rook, (first_space, y_space))
+
     for y in range(8):
         for x in range(8):
             if not chess_board[y][x] == 0:
-                screen.blit(num_to_surf[chess_board[y][x]], ((first_space + t_space * x, y_space - t_space * y)))
+                screen.blit(num_to_surf[chess_board[y][x]], ((x_offset + t_space * x, y_offset - t_space * y)))
     pygame.display.flip()
