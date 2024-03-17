@@ -2,6 +2,31 @@
 import pygame
 from math import trunc
 
+def find_legal_pawn(pawn_x, pawn_y, targ_x, targ_y, targ_piece, pawn_piece):
+    if pawn_piece % 2 == 0:
+        print("black's piece")
+        if (pawn_x == targ_x and pawn_y == targ_y + 2 and pawn_y == 6) or (pawn_x == targ_x and pawn_y == targ_y + 1):
+            return True
+        elif  targ_piece % 2 == 1 and (pawn_x == targ_x + 1 or pawn_x == targ_x - 1) and pawn_y == targ_y + 1: #normally would need targ piece check but not because of %
+            return True
+    else:
+        print("white piece")
+        if (pawn_x == targ_x and pawn_y == targ_y - 2 and pawn_y == 1) or (pawn_x == targ_x and pawn_y == targ_y - 1):
+            return True
+        elif  targ_piece % 2 == 0 and not targ_piece == 0 and (pawn_x == targ_x + 1 or pawn_x == targ_x - 1) and pawn_y == targ_y - 1:
+            return True
+    print("invalid pawn move")
+    return False
+def find_legal_knight(knight_x, knight_y, targ_x, targ_y):
+    print(knight_moves)
+    for i in range(8):
+        if knight_x - targ_x == knight_moves[i][0] and knight_y - targ_y == knight_moves[i][1]:
+            return True
+    print("invalid knight move")
+    return False
+
+
+
 screen = pygame.display.set_mode((700, 700))
 pygame.display.set_caption("Chess")
 #pygame.transform.scale(calculator, (int(calculator.get_width() * 0.75), int(calculator.get_height() * 0.75)))
@@ -37,6 +62,10 @@ chess_board = [
     ]
 num_to_surf = {0: None, 1: white_pawn, 2: black_pawn, 3: white_knight, 4: black_knight, 5: white_bishop, 6: black_bishop, 7: white_rook, 8: black_rook, 9: white_queen, 10: black_queen, 11: white_king, 12: black_king}
 mirror_fix = {0: 7, 1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6:1, 7: 0}
+pawn_moves = [[0, 1], [0, 2]]
+global knight_moves
+knight_moves = [[-2, 1], [-1, 2], [1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1]]
+legal_move_dicts_list = []
 t_space = 87
 y_offset = 405
 x_offset = -208
@@ -60,12 +89,23 @@ while running:
     if pygame.mouse.get_pressed()[0] and not mouse_was_pressed:
         if click1_cord == (None, None):
             click1_cord = (mirror_fix[mouse_row], mouse_column)
-            print(chess_board[click1_cord[0]][click1_cord[1]])
         else:
-            click2_cord = (mirror_fix[mouse_row], mouse_column)
-            print(chess_board[click2_cord[0]][click2_cord[1]])
-            chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
-            chess_board[click1_cord[0]][click1_cord[1]] = 0
+            click2_cord = (mirror_fix[mouse_row], mouse_column) # fix for mirror
+            print(click1_cord)
+            print(click2_cord)
+            if chess_board[click1_cord[0]][click1_cord[1]] == 0:
+                print("invalid null piece move")
+            elif chess_board[click1_cord[0]][click1_cord[1]] == 1 or chess_board[click1_cord[0]][click1_cord[1]] == 2: # optomise with dict, check if pawn
+                if  find_legal_pawn(click1_cord[1], click1_cord[0], click2_cord[1], click2_cord[0], chess_board[click2_cord[0]][click2_cord[1]], chess_board[click1_cord[0]][click1_cord[1]]):
+                    chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
+                    chess_board[click1_cord[0]][click1_cord[1]] = 0
+            elif chess_board[click1_cord[0]][click1_cord[1]] == 3 or chess_board[click1_cord[0]][click1_cord[1]] == 4:
+                if find_legal_knight(click1_cord[1], click1_cord[0], click2_cord[1], click2_cord[0]):
+                    chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
+                    chess_board[click1_cord[0]][click1_cord[1]] = 0
+            else:
+                chess_board[click2_cord[0]][click2_cord[1]] = chess_board[click1_cord[0]][click1_cord[1]]
+                chess_board[click1_cord[0]][click1_cord[1]] = 0
             click1_cord = (None, None)
             click2_cord = (None, None)
 
